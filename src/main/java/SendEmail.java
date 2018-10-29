@@ -9,7 +9,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 public class SendEmail {
-    public void sendMail(String message, String tytul) {
+    public void sendMail(String message, String tytul, String recipients) {
         //Setting up configurations for the email connection to the Google SMTP server using TLS
         Properties props = new Properties();
         props.put("mail.smtp.host", "true");
@@ -28,8 +28,8 @@ public class SendEmail {
             //Creating a Message object to set the email content
             MimeMessage msg = new MimeMessage(session);
             //Storing the comma seperated values to email addresses
-            String to = "wizz990@gmail.com,krysia.matyjasek@gmail.com";
-//            String to = "wizz990@gmail.com";
+//            String to = "wizz990@gmail.com,krysia.matyjasek@gmail.com";
+            String to = recipients;
             /*Parsing the String with defualt delimiter as a comma by marking the boolean as true and storing the email
             addresses in an array of InternetAddress objects*/
             InternetAddress[] address = InternetAddress.parse(to, true);

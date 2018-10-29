@@ -15,9 +15,13 @@ public class main {
     public static void main(String[] args) throws MessagingException {
 
         ChromeDriverManager.getInstance().setup();
-        String url = ("https://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/v1c9008l3200008p1?pr=1400,2200&fr=ownr&nr=2");
-        List<Ogloszenie> og = getOgloszeniaList(url);
-        String url_3pok = ("https://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/v1c9008l3200008p1?pr=1400,2200&fr=ownr&nr=3");
+        String url;
+        List<Ogloszenie> og;
+        String url_3pok;
+
+        url = ("https://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/v1c9008l3200008p1?pr=1400,2200&fr=ownr&nr=2");
+        og = getOgloszeniaList(url);
+        url_3pok = ("https://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/v1c9008l3200008p1?pr=1400,2200&fr=ownr&nr=3");
         og.addAll(getOgloszeniaList(url_3pok));
         for (int i = 2; i < 3; i++) {
             String url_2 = ("https://www.gumtree.pl/s-mieszkania-i-domy-do-wynajecia/warszawa/page-"+i+"/v1c9008l3200008p"+i+"?pr=1400,2200&fr=ownr&nr=2");
@@ -28,21 +32,30 @@ public class main {
             og.addAll(getOgloszeniaList(url_2_3pok));
         }
 
-        List<Ogloszenie> ogOchota = filterByDzielnica(og, "Ochota");
+        List<Ogloszenie> ogOchota;
+        List<Ogloszenie> ogSrodmiescie;
+        List<Ogloszenie> ogWola;
+        List<Ogloszenie> ogZoliborz;
+        List<Ogloszenie> ogMokotow;
+        List<Ogloszenie> ogWlochy;
+        List<Ogloszenie> ogUrsynow;
+        List<Ogloszenie> ogPragaP;
+
+        ogOchota = filterByDzielnica(og, "Ochota");
         og.removeAll(ogOchota);
-        List<Ogloszenie> ogSrodmiescie = filterByDzielnica(og, "Śródmieście");
+        ogSrodmiescie = filterByDzielnica(og, "Śródmieście");
         og.removeAll(ogSrodmiescie);
-        List<Ogloszenie> ogWola = filterByDzielnica(og, "Wola");
+        ogWola = filterByDzielnica(og, "Wola");
         og.removeAll(ogWola);
-        List<Ogloszenie> ogZoliborz = filterByDzielnica(og, "Żoliborz");
+        ogZoliborz = filterByDzielnica(og, "Żoliborz");
         og.removeAll(ogZoliborz);
-        List<Ogloszenie> ogMokotow = filterByDzielnica(og, "Mokotów");
+        ogMokotow = filterByDzielnica(og, "Mokotów");
         og.removeAll(ogMokotow);
-        List<Ogloszenie> ogWlochy = filterByDzielnica(og, "Włochy");
+        ogWlochy = filterByDzielnica(og, "Włochy");
         og.removeAll(ogWlochy);
-        List<Ogloszenie> ogUrsynow = filterByDzielnica(og, "Ursynów");
+        ogUrsynow = filterByDzielnica(og, "Ursynów");
         og.removeAll(ogUrsynow);
-        List<Ogloszenie> ogPragaP = filterByDzielnica(og, "Praga Południe");
+        ogPragaP = filterByDzielnica(og, "Praga Południe");
         og.removeAll(ogPragaP);
 
         SendEmail se = new SendEmail();
@@ -57,7 +70,47 @@ public class main {
         allMessagesSb.append(makeMessage(ogUrsynow));
         allMessagesSb.append(makeMessage(ogPragaP));
 
-        se.sendMail(allMessagesSb.toString(),"Gumtree 2 i 3 pokoje 1400 zł - 2200");
+        se.sendMail(allMessagesSb.toString(),"Gumtree 2 i 3 pokoje 1400 zł - 2200", "wizz990@gmail.com,krysia.matyjasek@gmail.com");
+//        se.sendMail(allMessagesSb.toString(),"Gumtree 2 i 3 pokoje 1400 zł - 2200", "wizz990@gmail.com");
+
+        //-----------------------OLX-----------------------\\
+
+        url = ("https://www.olx.pl/nieruchomosci/mieszkania/warszawa/?search%5Bfilter_float_price%3Afrom%5D=1400&search%5Bfilter_float_price%3Ato%5D=2200&search%5Bfilter_float_m%3Afrom%5D=34&search%5Bfilter_enum_rooms%5D%5B0%5D=two&search%5Bfilter_enum_rooms%5D%5B1%5D=three&search%5Bfilter_enum_rooms%5D%5B2%5D=four&search%5Bprivate_business%5D=private");
+        og = getOgloszeniaListOLX(url);
+        for (int i = 2; i < 4; i++) {
+            String url_2 = ("https://www.olx.pl/nieruchomosci/mieszkania/warszawa/?search%5Bfilter_float_price%3Afrom%5D=1400&search%5Bfilter_float_price%3Ato%5D=2200&search%5Bfilter_float_m%3Afrom%5D=34&search%5Bfilter_enum_rooms%5D%5B0%5D=four&search%5Bfilter_enum_rooms%5D%5B1%5D=three&search%5Bfilter_enum_rooms%5D%5B2%5D=two&search%5Bprivate_business%5D=private&page="+i);
+            og.addAll(getOgloszeniaListOLX(url_2));
+        }
+
+        ogOchota = filterByDzielnica(og, "Ochota");
+        og.removeAll(ogOchota);
+        ogSrodmiescie = filterByDzielnica(og, "Śródmieście");
+        og.removeAll(ogSrodmiescie);
+        ogWola = filterByDzielnica(og, "Wola");
+        og.removeAll(ogWola);
+        ogZoliborz = filterByDzielnica(og, "Żoliborz");
+        og.removeAll(ogZoliborz);
+        ogMokotow = filterByDzielnica(og, "Mokotów");
+        og.removeAll(ogMokotow);
+        ogWlochy = filterByDzielnica(og, "Włochy");
+        og.removeAll(ogWlochy);
+        ogUrsynow = filterByDzielnica(og, "Ursynów");
+        og.removeAll(ogUrsynow);
+        ogPragaP = filterByDzielnica(og, "Praga-Południe");
+        og.removeAll(ogPragaP);
+
+        allMessagesSb = new StringBuilder();
+        allMessagesSb.append(makeMessage(ogOchota));
+        allMessagesSb.append(makeMessage(ogSrodmiescie));
+        allMessagesSb.append(makeMessage(ogWola));
+        allMessagesSb.append(makeMessage(ogZoliborz));
+        allMessagesSb.append(makeMessage(ogMokotow));
+        allMessagesSb.append(makeMessage(ogWlochy));
+        allMessagesSb.append(makeMessage(ogUrsynow));
+        allMessagesSb.append(makeMessage(ogPragaP));
+
+        se.sendMail(allMessagesSb.toString(),"OLX 2 i 3 pokoje 1400 zł - 2200", "wizz990@gmail.com,krysia.matyjasek@gmail.com");
+//        se.sendMail(allMessagesSb.toString(),"OLX 2 i 3 pokoje 1400 zł - 2200", "wizz990@gmail.com");
 
     }
 
@@ -110,6 +163,55 @@ public class main {
 
         return resLinks;
     }
+    private static List<Ogloszenie> getOgloszeniaListOLX(String url){
+        List<Ogloszenie> resLinks = new ArrayList<Ogloszenie>();
+
+        WebDriver driver = new ChromeDriver();
+        driver.get(url);
+
+        for (int i = 3; i <=  39 ; i++) {
+
+            String tytul = null;
+            String tresc = null;
+            String link = null;
+            String dzielnica = null;
+            String cena = null;
+            String data = null;
+            try {
+                tytul = ( driver.findElement(By.xpath("//div/table[@id='offers_table']/tbody/tr["+i+"]/td[@class='offer promoted ' or 'offer ']/div[@class='offer-wrapper']//*/a/strong[1]")).getText());
+            } catch (Exception e) {
+            }
+            try {
+//                tresc = ( driver.findElement(By.xpath("")).getText());
+            } catch (Exception e) {
+            }
+            try {
+                link = ( driver.findElement(By.xpath("//div/table[@id='offers_table']/tbody/tr["+i+"]/td[@class='offer promoted ' or 'offer ']/div[@class='offer-wrapper']//*/a")).getAttribute("href"));
+            } catch (Exception e) {
+            }
+            try {
+                dzielnica = ( driver.findElement(By.xpath("(//div/table[@id='offers_table']/tbody/tr["+i+"]/td[@class='offer promoted ' or 'offer ']/div[@class='offer-wrapper']//*/small[@class='breadcrumb x-normal']/span)[1]")).getText());
+                dzielnica = dzielnica.substring(dzielnica.lastIndexOf(",") + 2);
+            } catch (Exception e) {
+            }
+
+            try {
+                data = ( driver.findElement(By.xpath("(//div/table[@id='offers_table']/tbody/tr["+i+"]/td[@class='offer promoted ' or 'offer ']/div[@class='offer-wrapper']//*/small[@class='breadcrumb x-normal']/span)[2]")).getText());
+            } catch (Exception e) {
+            }
+
+            try {
+                cena = ( driver.findElement(By.xpath("//div/table[@id='offers_table']/tbody/tr["+i+"]/td[@class='offer promoted ' or 'offer ']/div[@class='offer-wrapper']//*/p[@class='price']/strong[1]")).getText());
+            } catch (Exception e) {
+            }
+
+            Ogloszenie og = new Ogloszenie(tytul==null || tytul==""?"---":tytul,tresc==null || tytul==""?"---":tresc,link==null || tytul==""?"---":link,
+                    dzielnica==null || tytul==""?"---":dzielnica,cena==null || tytul==""?"---":cena,data==null || tytul==""?"---":data);
+            resLinks.add(og);
+        }
+
+        return resLinks;
+    }
     private static List<Ogloszenie> filterByDzielnica(List<Ogloszenie> og, String dzielnica){
         return     og.stream()
                      .filter(o -> dzielnica.equals(o.getDzielnica()))
@@ -120,7 +222,7 @@ public class main {
         int counter = 1;
 
         try {
-            sb.append("========================="+ (og.get(0).getDzielnica().equals("")? "":og.get(0).getDzielnica())+"==============================\n\n\n");
+            sb.append("==="+ (og.get(0).getDzielnica().equals("")? "":og.get(0).getDzielnica())+"===\n\n\n");
             for (Ogloszenie ogloszenie : og) {
                 sb.append(counter++ + ".\n");
                 sb.append(ogloszenie.getLink()+"\n");
@@ -134,6 +236,7 @@ public class main {
         }
         return sb.toString();
     }
+
 
 
 }
